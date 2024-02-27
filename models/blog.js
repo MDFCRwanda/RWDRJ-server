@@ -5,6 +5,7 @@ const blogSchema = mongoose.Schema({
 	title: {
 		type: String,
 		trim: true,
+		unique: ["blog with title already exists"],
 	},
 	datePosted: { type: Date, default: Date.now },
 	coverImage: {
@@ -27,7 +28,7 @@ const blogSchema = mongoose.Schema({
 			type: String,
 		},
 	],
-	postedBy: String,
+	postedBy: { type: String, default: "RWDRJ" },
 	gallery: [
 		{
 			link: String,

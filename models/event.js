@@ -5,6 +5,7 @@ const eventSchema = mongoose.Schema({
 	title: {
 		type: String,
 		trim: true,
+		unique: [true, "event with name already exists"],
 	},
 	datestart: {
 		type: Date,
@@ -44,6 +45,6 @@ const eventSchema = mongoose.Schema({
 	],
 });
 
-const Event = new mongoose.model(eventSchema);
+const Event = new mongoose.model("Event", eventSchema);
 
 module.exports = Event;

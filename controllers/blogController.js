@@ -2,7 +2,7 @@ const Blog = require("../models/blog");
 const asyncHandler = require("../utils/asyncHandler");
 const crypto = require("crypto");
 exports.getAll = asyncHandler(async (req, res) => {
-	const blogs = await Blog.find();
+	const blogs = await Blog.find().sort({ datePosted: -1 });
 
 	return res.status(200).json({
 		status: "success",
@@ -41,9 +41,10 @@ exports.create = asyncHandler(async (req, res) => {
 
 	if (newBlog) {
 		await Blog.findByIdAndUpdate(newBlog._id, {
-			link: `${process.env.serverURL + "\blogs" + newBlog.refId}}`,
+			link: `${process.env.serverURL}/blogs/${newBlog.refId}`,
 		});
 	}
+
 	return res.status(201).json({
 		status: "Success",
 		data: newBlog,

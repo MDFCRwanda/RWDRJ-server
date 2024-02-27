@@ -4,6 +4,8 @@ const morgan = require("morgan");
 
 const authRouter = require("./routes/authRouter");
 const blogRouter = require("./routes/blogRouter");
+const eventsRouter = require("./routes/eventRouter");
+const newsRouter = require("./routes/newsRouter");
 const app = express();
 
 app.use(morgan("dev"));
@@ -14,5 +16,7 @@ app.options("*", cors());
 
 app.use("/", authRouter);
 app.use("/blogs", blogRouter);
+app.use("/events", eventsRouter);
+app.use("/news", newsRouter);
 
 module.exports = app;
