@@ -69,7 +69,7 @@ exports.update = asyncHandler(async (req, res) => {
 exports.deleteOne = asyncHandler(async (req, res) => {
 	const { refId } = req.params;
 
-	const blog = await Blog.findOne({ refId });
+	await Blog.findOneAndDelete({ refId });
 
 	return res.status(200).json({
 		status: "Success",

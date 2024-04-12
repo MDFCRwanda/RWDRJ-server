@@ -17,6 +17,7 @@ const userSchema = mongoose.Schema({
 		select: false,
 		minLength: 8,
 	},
+	resetPasswordToken: String,
 });
 
 const User = new mongoose.model("User", userSchema);

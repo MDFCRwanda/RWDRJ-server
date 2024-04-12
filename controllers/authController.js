@@ -3,6 +3,7 @@ const asyncHandler = require("../utils/asyncHandler");
 const User = require("./../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const { send } = require("../utils/sendEmail");
 
 const signToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -67,6 +68,61 @@ exports.login = asyncHandler(async (req, res, next) => {
 	}
 
 	sendToken(user, 200, req, res);
+});
+
+exports.forgotPassword = asyncHandler(async (req, res) => {
+	const { email } = req.body;
+
+	const user = await User.findOne({ email: email });
+
+	if (!user) {
+		return res.status(403).json({
+			status: "fail",
+			message: "user not found",
+		});
+	} else {
+		const resetPasswordToken = signToken(user.id);
+		await User.findOneAndUpdate(
+			{ email },
+			{
+				resetPasswordToken: resetPasswordToken,
+			}
+		);
+		await send(
+			{
+				userEmail: user.email,
+				userNames: user.fullname,
+				token: resetPasswordToken,
+			},
+			"Forgot Password"
+		);
+		return res.status(200).json({
+			token: resetPasswordToken,
+			status: "success",
+			message: "reset password link sent to your email",
+		});
+	}
+});
+
+exports.resetPassword = asyncHandler(async (req, res) => {
+	const { token, password } = req.body;
+	const user = await User.findOne({ resetPasswordToken: token });
+	if (!user) {
+		return res.status(403).json({
+			status: "fail",
+			message: "token is invalid",
+		});
+	} else {
+		const hashedPassword = await bcrypt.hash(password, 14);
+		await User.findOneAndUpdate(
+			{ id: user.id },
+			{ password: hashedPassword, resetPasswordToken: null }
+		);
+		return res.status(203).json({
+			status: "success",
+			message: "password reset successfully",
+		});
+	}
 });
 
 exports.logout = asyncHandler((req, res) => {
