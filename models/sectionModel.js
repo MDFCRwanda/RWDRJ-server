@@ -15,13 +15,9 @@ const sectionSchema = mongoose.Schema({
 		type: String,
 		trim: true,
 	},
-	gallery: [
-		{
-			type: string,
-		},
-	],
+	// hasButton:Boolean
+	linkText: String,
+	link: String,
 });
 
-const Section = new mongoose.model(sectionSchema);
-
-module.exports = Section;
+module.exports = sectionSchema;

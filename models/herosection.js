@@ -2,11 +2,9 @@ const mongoose = require("mongoose");
 
 const heroSectionSchema = mongoose.Schema({
 	sliderImages: [{ type: String }],
-	content: String,
+	subtitle: String,
 	title: String,
-	buttonTexts: [String],
+	buttonText: String,
 });
 
-const HeroSection = new mongoose.model("HeroSection", heroSectionSchema);
-
-module.exports = HeroSection;
+module.exports = heroSectionSchema;
