@@ -1,4 +1,4 @@
-const TeamMember = require("../models/TeamMember");
+const TeamMember = require("../models/teamMember");
 const asyncHandler = require("../utils/asyncHandler");
 
 exports.get = asyncHandler(async (req, res) => {
